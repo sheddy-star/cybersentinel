@@ -1,4 +1,4 @@
-from modules.system_info import get_system_info
+"""from modules.system_info import get_system_info
 
 
 class CyberSentinelAgent:
@@ -207,9 +207,9 @@ class CyberSentinel:
 
 if __name__ == "__main__":
     agent = CyberSentinel()
-    agent.run()
+    agent.run()"""
 
-""" import os
+import os
 import time
 import threading
 import logging
@@ -422,4 +422,4 @@ class CyberSentinel:
 if __name__ == "__main__":
 
     agent = CyberSentinel()
-    agent.run() """
+    agent.run()
