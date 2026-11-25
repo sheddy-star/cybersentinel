@@ -423,3 +423,260 @@ if __name__ == "__main__":
 
     agent = CyberSentinel()
     agent.run()
+import os
+import time
+import threading
+import logging
+
+from datetime import datetime
+
+from modules.threat_detector import ThreatDetector
+from modules.ai_engine import AISecurityEngine
+from modules.network_monitor import NetworkMonitor
+
+
+# ==========================================
+# CYBERSENTINEL LOGGING SYSTEM
+# ==========================================
+
+os.makedirs("logs", exist_ok=True)
+
+logging.basicConfig(
+    filename="logs/cybersentinel.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+
+# ==========================================
+# MAIN CYBERSENTINEL CONTROLLER
+# ==========================================
+
+class CyberSentinel:
+
+    def __init__(self):
+
+        print("=" * 60)
+        print("       CYBERSENTINEL UNIFIED SECURITY SYSTEM")
+        print("=" * 60)
+
+        self.running = False
+        self.alert_lock = threading.Lock()
+
+        # Initialize Threat Detector
+        self.threat_detector = ThreatDetector()
+
+        # Initialize AI Security Engine
+        self.ai_engine = AISecurityEngine()
+
+        # Initialize Network Monitor
+        self.network_monitor = NetworkMonitor()
+
+        # Connect Threat Detector to Main Controller
+        self.threat_detector.alert_callback = self.handle_threat
+
+        print("[+] Security Agent: INITIALIZED")
+        print("[+] AI Security Engine: INITIALIZED")
+        print("[+] Threat Detector: INITIALIZED")
+        print("[+] Network Monitor: INITIALIZED")
+        print("[+] Alert Manager: INITIALIZED")
+
+        logging.info("CyberSentinel initialized.")
+
+    # ======================================
+    # CENTRAL SECURITY ALERT MANAGER
+    # ======================================
+
+    def handle_threat(self, threat):
+
+        with self.alert_lock:
+
+            print("\n")
+            print("=" * 60)
+            print("          CYBERSENTINEL SECURITY ALERT")
+            print("=" * 60)
+
+            print(f"Detection Time: {datetime.now()}")
+            print(f"Threat Details: {threat}")
+
+            logging.warning("THREAT DETECTED: %s", threat)
+
+            # Forward threat to AI Engine
+            print("\n[+] Forwarding threat to AI Security Engine...")
+
+            try:
+
+                report = self.ai_engine.analyze_threat(threat)
+
+                self.ai_engine.display_report(report)
+
+                logging.warning(
+                    "CYBERSENTINEL SECURITY EVENT: %s",
+                    report
+                )
+
+                print("\n[+] Threat analysis completed.")
+                print("[+] Security event recorded.")
+                print("[+] Alert Manager notified.")
+
+            except Exception:
+
+                logging.exception("AI threat analysis failed.")
+
+                print("[ERROR] AI threat analysis failed.")
+
+            print("=" * 60)
+
+    # ======================================
+    # SECURITY AGENT
+    # ======================================
+
+    def security_agent(self):
+
+        while self.running:
+
+            print("\n[SECURITY AGENT] System monitoring active.")
+
+            time.sleep(5)
+
+    # ======================================
+    # LIVE NETWORK MONITOR
+    # ======================================
+
+    def network_monitor_loop(self):
+
+        print("\n[+] Live Network Monitor started.")
+
+        logging.info("Live Network Monitor started.")
+
+        while self.running:
+
+            try:
+
+                # Display current active connections
+                self.network_monitor.display_connections()
+
+            except Exception:
+
+                logging.exception("Network Monitor error.")
+
+                print("[ERROR] Network Monitor encountered an error.")
+
+            # Refresh network connections every 2 seconds
+            time.sleep(2)
+
+        print("[+] Live Network Monitor stopped.")
+
+        logging.info("Live Network Monitor stopped.")
+
+    # ======================================
+    # THREAT DETECTION ENGINE
+    # ======================================
+
+    def start_threat_detection(self):
+
+        print("[+] Starting Threat Detection Engine...")
+
+        try:
+
+            self.threat_detector.start_monitoring()
+
+        except Exception:
+
+            logging.exception("Threat Detector error.")
+
+            print("[ERROR] Threat Detector failed.")
+
+    # ======================================
+    # START ALL SECURITY COMPONENTS
+    # ======================================
+
+    def start(self):
+
+        if self.running:
+            return
+
+        self.running = True
+
+        print("\nStarting CyberSentinel components...\n")
+
+        # Start Security Agent
+        self.agent_thread = threading.Thread(
+            target=self.security_agent,
+            daemon=True
+        )
+
+        self.agent_thread.start()
+
+        # Start Live Network Monitor
+        self.network_thread = threading.Thread(
+            target=self.network_monitor_loop,
+            daemon=True
+        )
+
+        self.network_thread.start()
+
+        # Start Threat Detector
+        self.detector_thread = threading.Thread(
+            target=self.start_threat_detection,
+            daemon=True
+        )
+
+        self.detector_thread.start()
+
+        print("\n" + "=" * 60)
+        print("       CYBERSENTINEL MONITORING STATUS")
+        print("=" * 60)
+
+        print("Security Agent: ACTIVE")
+        print("AI Security Engine: ACTIVE")
+        print("Threat Detector: STARTING")
+        print("Network Monitor: ACTIVE")
+        print("Alert Manager: ACTIVE")
+
+        print("=" * 60)
+
+        logging.info("CyberSentinel unified engine started.")
+
+    # ======================================
+    # MAIN APPLICATION LOOP
+    # ======================================
+
+    def run(self):
+
+        self.start()
+
+        try:
+
+            while self.running:
+
+                time.sleep(1)
+
+        except KeyboardInterrupt:
+
+            self.stop()
+
+    # ======================================
+    # STOP APPLICATION
+    # ======================================
+
+    def stop(self):
+
+        self.running = False
+
+        print("\nStopping CyberSentinel...")
+
+        logging.info("CyberSentinel stopped.")
+
+        print("[+] Security monitoring stopped.")
+
+
+# ==========================================
+# APPLICATION ENTRY POINT
+# ==========================================
+
+if __name__ == "__main__":
+
+    agent = CyberSentinel()
+
+    agent.run()
