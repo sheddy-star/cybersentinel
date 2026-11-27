@@ -100,7 +100,7 @@ class ThreatDetector:
 
         self.report_file = self.log_dir / "security_events.jsonl"
 
-        self.last_alerts = {}
+        self.last_alerts = None
 
         self.suspicious_names = [
             "keylogger",
