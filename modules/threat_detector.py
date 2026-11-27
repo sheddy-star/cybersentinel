@@ -589,3 +589,4 @@ if __name__ == "__main__":
     detector = ThreatDetector()
 
     detector.start_monitoring()
+    
